@@ -51,6 +51,35 @@ export const getPageStaticProps = async (context) => {
             }
           }
         }
+      acfOptionsMainMenu {
+          mainMenu {
+            logo {
+              sourceUrl
+            }
+            headerDescription {
+              boldText
+              regularText
+            }
+            menuItems {
+              menuItem {
+                destination {
+                  ... on Page {
+                    uri
+                  }
+                }
+                label
+              }
+              items {
+                destination {
+                  ... on Page {
+                    uri
+                  }
+                }
+                label
+              }
+            }
+          }
+        }
         allPosts: posts(first: 10000) {
           nodes {
             id
@@ -69,6 +98,23 @@ export const getPageStaticProps = async (context) => {
             }
           }
         }
+        apartmentsPages: pages(where: { parent: { node: { slug: "apartments" } } }) {
+          nodes {
+            id
+            title
+            uri
+            blocks
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
+            seo {
+              title
+              metaDesc
+            }
+          }
+        }
       }
     `,
     variables: {
@@ -77,6 +123,8 @@ export const getPageStaticProps = async (context) => {
   });
 
   const nodeByUri = data.nodeByUri || null;
+  // Extract the apartmentsPages data
+  const apartmentsPages = data.apartmentsPages.nodes;
 
   const blocks = cleanAndTransformBlocks(data.nodeByUri?.blocks || []);
   const isHomePage = uri === "/";
@@ -96,7 +144,10 @@ export const getPageStaticProps = async (context) => {
       date: data.nodeByUri?.date || null,
       category: data.nodeByUri?.categories?.nodes?.[0]?.name || null,
       blocks,
+      logo: data.acfOptionsMainMenu.mainMenu.logo.sourceUrl,
+      mainMenuItems: mapMainMenuItems(data.acfOptionsMainMenu.mainMenu.menuItems),
       featuredImage: data.nodeByUri?.featuredImage?.node?.sourceUrl || data.nodeByUri?.featuredImage?.sourceUrl || null,
+      apartmentsPages,
     },
   };
 };

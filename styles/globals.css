@@ -1,5 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=Aboreto&family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+textarea {
+  resize: none;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1220px;
+  padding: 0 10px;
+  margin: 0 auto;
+}
+
+/* for GallerySlider component */
+/* describe ImageGallery */
+/* .image-gallery {
+  max-width: 700px;
+} */
+/* for GallerySlider component */
+/* describe ImageGallery */
